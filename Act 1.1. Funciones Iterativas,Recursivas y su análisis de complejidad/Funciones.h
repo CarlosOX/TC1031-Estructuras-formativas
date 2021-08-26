@@ -13,7 +13,7 @@ class Funciones{
 };
 
 
-int Funciones:: sumaIterativa(int n){
+int Funciones::sumaIterativa(int n){
 	int acum=0;
 	
 	for(int i=0;i<=n;i++){
