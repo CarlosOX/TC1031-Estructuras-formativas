@@ -10,5 +10,5 @@ ANÁLISIS DE COMPLEJIDAD TEMPORAL PARA UPDATE:
  
 ANÁLISIS DE COMPLEJIDAD TEMPORAL PARA DELETE:
   
-   Para esta función se presentan un valor de entrada en el cual se utiliza un ciclo While donde  las iteraciones(itr) son representadas por " n " e incrementa de forma lineal por lo que O(1)*n. O sea complejidad O(n).
+   Para esta función se presentan un valor de entrada en el cual se utiliza un ciclo While donde  las iteraciones(itr) son representadas por " n " e incrementa de forma lineal. Sin embargo este ciclo no afecta los valores de entrada de la función por lo que O(1). O sea complejidad O(1).
    
