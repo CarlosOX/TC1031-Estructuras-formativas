@@ -153,39 +153,38 @@ int Node<T>::height(){
 	return (max(alturaizq,alturader)+1);
 }
 
-/*
+
 template <class T>
-void Node<T>::ancestors(T,stringstream &aux) const{
-
-	if(val==value){
-		return 
+void Node<T>::ancestors(T val,stringstream &aux) const{
+	
+	aux<<val;
+	
+	if (val<value && left!=0) {
+		aux<<" ";
+		left->ancestors(val,aux);
 	}
-
-
+	if (val>value && right !=0) {
+		aux<<" ";
+		right->ancestors(val,aux);
+	}
+	
 }
 
-*/
+
 
 
 
 template <class T>
 int Node<T>::whatlevelamI(T val) {
-
-	if (value ==val) {
-		return level;
-	}
-	else if (val < value) {
-		level++;
-		left->whatlevelamI(val);
-		
+	 if (val < value) {
+	 	level=left->whatlevelamI(val)+1;
 	} 
 	
-	else if (val > value) {
-		
-		level++;
-		right->whatlevelamI(val);
+	if (val > value) {
+		level=right->whatlevelamI(val)+1;
 	}
 	
+	return level;
 }
 
 
@@ -244,7 +243,7 @@ BST<T>::~BST() {
 template <class T>
 bool BST<T>::empty() const {
 	return (root == 0);
-}
+}  
 
 template<class T>
 void BST<T>::add(T val) {
@@ -254,6 +253,15 @@ void BST<T>::add(T val) {
 		}
 	} else {
 		root = new Node<T>(val);
+	}
+}
+
+template <class T>
+bool BST<T>::find(T val) const {
+	if (root != 0) {
+		return root->find(val);
+	} else {
+		return false;
 	}
 }
 
@@ -306,13 +314,7 @@ int BST<T>::height() {
 }
 
 
-/*
-template <class T>
-string BST<T>::ancestors(val){
-	
-	
-}
-*/
+
 
 template <class T>
 int BST<T>::whatlevelamI(T val) {
@@ -326,6 +328,29 @@ int BST<T>::whatlevelamI(T val) {
 	
 }
 
+template<class T>
+string BST<T>::ancestors(T val) const{
+	
+	stringstream aux;
+	if (find(val)==false){
+		aux<<"[";
+		aux<<"]";
+		return aux.str();
+	}
+	else{
+		aux <<"[";
+		if (!empty()) {
+			root->ancestors(val,aux);
+		}
+		aux <<"]";
+	
+		return aux.str();
+		
+		
+	}
+		
+			
+}
 
 
 template <class T>
