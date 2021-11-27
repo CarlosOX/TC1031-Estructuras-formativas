@@ -29,7 +29,7 @@ public:
     Graph(int);
 
     void loadGraphList(string, int, int);
-	void loadGraphMat(string, int, int);
+    void loadGraphMat(string, int, int);
     void addEdgeAdjMatrix(int, int);
     void addEdgeAdjList(int, int);
     string printAdjMat();
