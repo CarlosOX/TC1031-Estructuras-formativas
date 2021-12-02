@@ -1,8 +1,9 @@
+#ifndef BST_H
+#define BST_H
+
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <stdlib.h>
-
 
 using namespace std;
 
@@ -10,53 +11,59 @@ template <class T> class BST;
 
 template <class T>
 class Node {
-private:
-	T value;
-	int level;
-	Node *left, *right;
+  private:
+    T value;
+    Node *left, *right;
 
-	Node<T>* succesor();
+  public:
+    Node(T);
+    Node(T, Node<T>*, Node<T>*);
+    
+    void add(T);
+    bool find(T);
 
-public:
-	Node(T);
-	Node(T, Node<T>*, Node<T>*,int);
-	void add(T);
-	bool find(T);
-	void removeChilds();
-	void preorder(stringstream&) const;
-	void inorder(stringstream&) const;
-	void postorder(stringstream&) const;
-	void levelbylevel(stringstream&) const;
-	int height();	
-	void ancestors(T,stringstream&) const;
-	int whatlevelamI(T);
-	
+    //Funciones de visit
+    void preorder(stringstream&) const;
+    void inorder(stringstream&) const;
+    void postorder(stringstream&) const;
+    void printlevel(stringstream&, int) const;
+    void levelbylevel(stringstream&) const;
 
-	friend class BST<T>;
+    //Funcion height
+    int height() const;
+
+    //Funcion ancestors
+    bool ancestors(T, stringstream&);
+    
+    //Funcion whatlevelamI
+    int whatlevelamI(T);
+
+    friend class BST<T>;
 };
 
+template <class T>
+Node<T>::Node(T val)
+ : value(val), left(0), right(0) {}
 
 template <class T>
-Node<T>::Node(T val) : value(val), left(0), right(0), level(1){}
+Node<T>::Node(T val, Node<T> *le, Node<T> *ri)
+	: value(val), left(le), right(ri) {}
 
-template <class T>
-Node<T>::Node(T val, Node<T> *le, Node<T> *ri, int lev)
-	: value(val), left(le), right(ri), level(lev) {}
-	
-	
-	
 template <class T>
 void Node<T>::add(T val) {
 	if (val < value) {
 		if (left != 0) {
 			left->add(val);
-		} else {
+		}
+    else {
 			left = new Node<T>(val);
 		}
-	} else {
+	}
+  else {
 		if (right != 0) {
 			right->add(val);
-		} else {
+		}
+    else {
 			right = new Node<T>(val);
 		}
 	}
@@ -66,27 +73,12 @@ template <class T>
 bool Node<T>::find(T val) {
 	if (val == value) {
 		return true;
-	} else if (val < value) {
+	}
+  else if (val < value) {
 		return (left != 0 && left->find(val));
-	} else if (val > value) {
+	}
+  else {
 		return (right != 0 && right->find(val));
-	}
-}
-
-template <class T>
-void Node<T>::inorder(stringstream &aux) const {
-	if (left != 0) {
-		left->inorder(aux);
-	}
-	
-	if (aux.tellp()!=1){
-		aux<<" ";
-		
-	}
-	
-	aux << value;
-	if (right != 0) {
-		right->inorder(aux);
 	}
 }
 
@@ -104,6 +96,20 @@ void Node<T>::preorder(stringstream &aux) const {
 }
 
 template <class T>
+void Node<T>::inorder(stringstream &aux) const {
+	if (left != 0) {
+		left->inorder(aux);
+	}
+	if (aux.tellp() != 1) {
+		aux << " ";
+	}
+	aux << value;
+	if (right != 0) {
+		right->inorder(aux);
+	}
+}
+
+template <class T>
 void Node<T>::postorder(stringstream &aux) const {
 	if (left != 0) {
 		left->postorder(aux);
@@ -111,139 +117,120 @@ void Node<T>::postorder(stringstream &aux) const {
 	if (right != 0) {
 		right->postorder(aux);
 	}
-	aux << value;
-	if (aux.tellp()!=1){
-		aux<<" ";
+  if (aux.tellp() != 1) {
+			aux << " ";
 	}
-
+	aux << value;
 }
 
+template <class T>
+void Node<T>::printlevel(stringstream &aux, int level) const {
+	if(level == 0){
+		if (aux.tellp() != 1) {
+				aux << " ";
+		}
+		aux << value;
+	}
+  if (left != 0) {
+		left->printlevel(aux, level -1);
+	}
+  if (right != 0) {
+		right->printlevel(aux, level -1);
+	}
+}
 
- /*
 template <class T>
 void Node<T>::levelbylevel(stringstream &aux) const {
-	
-	
-
-		
+	int level = height();
+  for(int i = 0; i < level; i++){
+			printlevel(aux, i);
+	}
 }
-
-*/
-
-//ESTA
-template <class T>
-int Node<T>::height(){
-	
-
-	int alturaizq,alturader;
-	
-	if(left == NULL && right == NULL){
-		return 1;
-	}
-	
-	if(left != NULL){
-		alturaizq=left->height();
-	}
-	
-	if(right != NULL){
-		alturader=right->height();
-		
-	}
-
-	return (max(alturaizq,alturader)+1);
-}
-
 
 template <class T>
-void Node<T>::ancestors(T val,stringstream &aux) const{
-	
-	aux<<val;
-	
-	if (val<value && left!=0) {
-		aux<<" ";
-		left->ancestors(val,aux);
+int Node<T>::height() const {
+	int leftLevel = 0, rightLevel = 0;
+	if (left != 0) {
+		leftLevel = left->height() + 1;
 	}
-	if (val>value && right !=0) {
-		aux<<" ";
-		right->ancestors(val,aux);
+  if (right != 0) {
+		rightLevel= right->height() +1;
 	}
-	
+  if (leftLevel == 0 && rightLevel == 0) {
+    return 1;
+  }
+	return (rightLevel > leftLevel ) ? rightLevel : leftLevel;
 }
 
-
-
-
+template <class T>
+bool Node<T>::ancestors(T val, stringstream &aux) {
+	if (val == value) {
+	  return true;
+	}
+  else if (val < value) {
+		if (aux.tellp() != 1) {
+			aux << " ";
+		}
+		aux << value;
+		return (left != 0 && left->ancestors(val,aux));
+	}
+  else {
+		if (aux.tellp() != 1) {
+			aux << " ";
+		}
+		aux << value;
+		return (right != 0 && right->ancestors(val,aux));
+	}
+}
 
 template <class T>
 int Node<T>::whatlevelamI(T val) {
-	 if (val < value) {
-	 	level=left->whatlevelamI(val)+1;
-	} 
-	
-	if (val > value) {
-		level=right->whatlevelamI(val)+1;
+	if (val == value) {
+		return 1;
 	}
-	
-	return level;
+  else if (val < value) {
+		if(left != 0)
+			return left->whatlevelamI(val) + 1;
+	}
+  else {
+		if (right != 0)
+		return right->whatlevelamI(val) + 1;
+	}
+  return -1;
 }
-
-
-
-template <class T>
-void Node<T>::removeChilds() {
-	if (left != 0) {
-		left->removeChilds();
-		delete left;
-		left = 0;
-	}
-	if (right != 0) {
-		right->removeChilds();
-		delete right;
-		right = 0;
-	}
-}
-
-
-
-
-
-
-
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
 
 template <class T>
 class BST {
-private:
-	Node<T> *root;
+  private:
+    Node<T> *root;
 
-public:
-	BST();
-	~BST();
-	bool empty() const;
-	void add(T);
-	bool find(T) const;
-	void removeAll();
-	string visit() const;
-	int height();
-	string ancestors(T) const;
-	int whatlevelamI(T);
-	
-	
-
+  public:
+    BST();
+    
+    bool empty() const;
+    void add(T);
+    bool find(T) const;
+    
+    string visit();
+    string preorder() const;
+    string inorder() const;
+    string postorder() const;
+    string levelbylevel() const;
+    
+    string ancestors(T);
+    
+    int height() const;
+    
+    int  whatlevelamI(T) const;
 };
 
 template <class T>
 BST<T>::BST() : root(0) {}
 
 template <class T>
-BST<T>::~BST() {
-	removeAll();
-}
-
-template <class T>
 bool BST<T>::empty() const {
 	return (root == 0);
-}  
+}
 
 template<class T>
 void BST<T>::add(T val) {
@@ -260,107 +247,97 @@ template <class T>
 bool BST<T>::find(T val) const {
 	if (root != 0) {
 		return root->find(val);
-	} else {
+	}
+	else {
 		return false;
 	}
 }
 
-
-template<class T>
-string BST<T>::visit() const{
-	
+template <class T>
+string BST<T>::visit() {
 	stringstream aux;
+	aux << preorder() << "\n";
+	aux << inorder() << "\n";
+	aux << postorder() << "\n";
+	aux << levelbylevel();
+	return aux.str();
+}
 
-	aux <<"[";
+template <class T>
+string BST<T>::preorder() const {
+	stringstream aux;
+	aux << "[";
 	if (!empty()) {
 		root->preorder(aux);
 	}
-	aux <<"]";
-	
-	aux<<"\n";
-	
-	aux<<"[";
-	if (!empty()){
+	aux << "]";
+	return aux.str();
+}
+
+template <class T>
+string BST<T>::inorder() const {
+	stringstream aux;
+	aux << "[";
+	if (!empty()) {
 		root->inorder(aux);
 	}
-	aux<<"]";
-	
-	aux<<"\n";
-	
-	aux<<"[";
-	if(!empty()){
+	aux << "]";
+	return aux.str();
+}
+
+template <class T>
+string BST<T>::postorder() const {
+	stringstream aux;
+
+	aux << "[";
+	if (!empty()) {
 		root->postorder(aux);
 	}
-	aux<<"]";
-	
+	aux << "]";
 	return aux.str();
-	
 }
-
-
-
-
 
 template <class T>
-int BST<T>::height() {	
-
-	if (root != 0) {
-		root->height();
-	}
-	
-	else{
-		return -1;
-	}
-}
-
-
-
-
-template <class T>
-int BST<T>::whatlevelamI(T val) {
-	if (root !=0){
-		root->whatlevelamI(val);
-	}
-	else{
-		return -1;
-	}
-	
-	
-}
-
-template<class T>
-string BST<T>::ancestors(T val) const{
-	
+string BST<T>::levelbylevel() const {
 	stringstream aux;
-	if (find(val)==false){
-		aux<<"[";
-		aux<<"]";
-		return aux.str();
-	}
-	else{
-		aux <<"[";
-		if (!empty()) {
-			root->ancestors(val,aux);
-		}
-		aux <<"]";
-	
-		return aux.str();
-		
-		
-	}
-		
-			
-}
 
+	aux << "[";
+	if (!empty()) {
+		root->levelbylevel(aux);
+	}
+	aux << "]";
+	return aux.str();
+}
 
 template <class T>
-void BST<T>::removeAll() {
-	if (root != 0) {
-		root->removeChilds();
-	}
-	delete root;
-	root = 0;
+int BST<T>::height() const {
+	return root->height();
 }
 
+template <class T>
+string BST<T>::ancestors(T val) {
+	stringstream aux;
+	aux << "[";
+	if (!empty()) {
+		if(!root->ancestors(val, aux))
+			return "[]";
+	}
+	aux << "]";
+	return aux.str();
+}
+
+template <class T>
+int BST<T>::whatlevelamI(T val) const {
+	if (root != 0) {
+	 	int num = root->whatlevelamI(val);
+		if(num < 0) return -1;
+		return num;
+	}
+	else {
+		return -1;
+	}
+}
+
+#endif
 
 	
