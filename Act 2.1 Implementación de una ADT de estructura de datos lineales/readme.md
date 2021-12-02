@@ -1,3 +1,7 @@
+#CORRECIONES 
+Se agregaron los análisis de complejidad
+
+
 ANÁLISIS DE COMPLEJIDAD TEMPORAL PARA INSERTION: Para esta función no se presentan iteraciones y recorre n pasos en un ciclo while. Por lo que se presenta una complejidad O(n) para el peor de los casos.
 
 ANÁLISIS DE COMPLEJIDAD TEMPORAL PARA SEARCH: Para esta función se presenta un ciclo While donde n es representado por el valor que se desea encontrar se trata de O(1)*n. O sea complejidad O(n).
