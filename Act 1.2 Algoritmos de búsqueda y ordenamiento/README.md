@@ -1,3 +1,7 @@
+# Correcciones 
+
+Se implementaron todos los algortimos de búsqueda y sus repstivos análisis de complejidad
+
 ### Análisis de complejidad temporal
 ** Selection Sort
 
