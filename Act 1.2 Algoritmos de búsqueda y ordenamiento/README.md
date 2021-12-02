@@ -5,7 +5,7 @@ El algoritmo de ordenamiento de selección recorre n pasos dos veces mediante un
 
 ** Bubble Sort
 
-El algoritmo de ordenamiento burbuja recorre n pasos 2 veces, al igual que el Selection Sort, porque en el peor de los casos tiene que comparar todos los números e intercambiar su posición, por lo que su complejidad es O(n^2).
+El algoritmo de ordenamiento burbuja recorre n pasos 2 veces porque en el peor de los casos tiene que comparar todos los números e intercambiar su posición, por lo que su complejidad es O(n^2).
 
 ** Merge Sort
 
@@ -13,8 +13,8 @@ El algoritmo de ordenamiento Merge divide la búsqueda en mitades cada vez más 
 
 ** Búsqueda Secuencial
 
-El algoritimo de búsqueda secuencial recorre, en el peor de los casos, un arreglo completo utilizando un ciclo for, por lo que su complejidad es O(n).
+Este algoritmo  recorre  un arreglo c utilizando un ciclo for en el peor de los casos, por lo que su complejidad es O(n).
 
 ** Búsqueda Binaria
 
-El algoritmo de búsqueda binaria funciona dividiendo la búsqueda en mitades utilizando la técnica de recursión, por lo que su complejidad es O(log n) para el peor de los casos.
+Este algortimo divide la búsqueda en mitades utilizando  recursión, por lo que su complejidad es O(log n) para el peor de los casos.
